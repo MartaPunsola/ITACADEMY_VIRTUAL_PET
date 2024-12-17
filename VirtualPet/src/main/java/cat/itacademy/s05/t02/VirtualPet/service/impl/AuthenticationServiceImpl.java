@@ -2,7 +2,7 @@ package cat.itacademy.s05.t02.VirtualPet.service.impl;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
-import cat.itacademy.s05.t02.VirtualPet.model.enums.EnumRole;
+import cat.itacademy.s05.t02.VirtualPet.model.enums.Role;
 import cat.itacademy.s05.t02.VirtualPet.payload.request.SignInRequest;
 import cat.itacademy.s05.t02.VirtualPet.payload.request.SignUpRequest;
 import cat.itacademy.s05.t02.VirtualPet.payload.response.JwtResponse;
@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = User.builder().username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(EnumRole.ROLE_USER).build();
+                .role(Role.ROLE_USER).build();
         userRepository.save(user);
         var jwt = jwtService.generateToken(user);
         //validate token???

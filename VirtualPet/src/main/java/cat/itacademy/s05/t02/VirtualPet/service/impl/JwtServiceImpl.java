@@ -25,79 +25,56 @@ public class JwtServiceImpl implements JwtService {
 
     @Value("${token.signing.key}") //???personalitzar; ha de coincidir amb properties
     private String secretKey;
-    ///posar expiration???
+
     @Value("${token.signing.expiration}") //???personalitzar; ha de coincidir amb properties
-    private int expiration;
-
-
+    private long jwtExpiration;
 
     @Override
-    public String generateToken(User user) { //retocar el tema del User!!!
-        return buildToken(user);
+    public String extractUserName(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    private String buildToken(User user) {
-        return Jwts.builder()
-                .id(user.getId().toString())
-                .claims(Map.of("name", user.getUsername()))
-                .subject(user.getEmail())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date((new Date()).getTime() + expiration)) //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSigningKey())
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolvers.apply(claims);
+    }
+
+    @Override
+    public String generateToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, jwtExpiration);
+    }
+
+    private String buildToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails,
+            long expiration
+    ) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+
+        /*return Jwts.builder()
+            .subject(userDetails.getUsername())
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(getSignInKey())
+            .compact();*/
     }
 
-    private Key getSigningKey() {
+    private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     @Override
-    public String extractEmailFromToken(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey()).build()
-                .parseClaimsJws(token).getBody().getSubject();
-
-        //opció del vídeo
-        /*final Claims jwtToken = Jwts.parser()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-        return jwtToken.getSubject();*/
-    }
-
-    @Override
-    public boolean validateJwtToken(String authToken) {
-        try {
-            Jwts.parser().setSigningKey(getSigningKey()).build().parse(authToken);
-            return true;
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
-        }
-        return false;
-    }
-
-    //isvalid, isexpired, extractexpiration??? vid. vídeo minut 28 aprox
-
-
-
-    /*private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolvers.apply(claims);
-    }
-
-    //revisar per entendre
-    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String userName = extractUserName(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
@@ -109,16 +86,14 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
+        return Jwts
+                .parser()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
                 .getBody();
+    }
 
-        //verxion 0.12
-        Jwts.parser()
-    .verifyWith(key)
-    .build()
-    .parseSignedClaims(jwt)
-    .getPayload();
-    }*/
 
 
 

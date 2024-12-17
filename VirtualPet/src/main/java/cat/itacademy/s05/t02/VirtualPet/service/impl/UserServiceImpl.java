@@ -16,33 +16,39 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository; //o Autowired???
+    private final UserRepository userRepository;
 
-
-
-    /*@Override
-    @Transactional
-    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
-        return UserDetailsImpl.build(user);
-    }*/
-
-    /*@Override
+    @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
                 return userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+                /*User user = userRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+                //cal aplicar o ja està implícit a algun lloc?
+                // Mapeja els rols del teu usuari al tipus GrantedAuthority
+                Collection<GrantedAuthority> authorities = user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.name()))
+                        .toList();
+
+                return new org.springframework.security.core.userdetails.User(
+                        user.getEmail(),
+                        user.getPassword(),
+                        authorities
+                );*/
             }
         };
-    }*/
-
-    @Override
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findByEmail(email); //aquest pot llençar una excepció si no troba el email!!
-        //.orElseThrow(() -> new UserNotFoundException("This email is not registered.//User not found.."));
     }
+
+    //mètode find All
+    /*public List<User> allUsers() {
+        List<User> users = new ArrayList<>();
+
+        userRepository.findAll().forEach(users::add);
+
+        return users;
+    }*/
 }

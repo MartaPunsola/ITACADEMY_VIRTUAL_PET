@@ -1,6 +1,6 @@
 package cat.itacademy.s05.t02.VirtualPet.model.enums;
 
-public enum EnumRole {
+public enum Role {
 
     ROLE_ADMIN(),
     ROLE_USER();
