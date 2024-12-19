@@ -1,8 +1,8 @@
 package cat.itacademy.s05.t02.VirtualPet.service;
 
-import cat.itacademy.s05.t02.VirtualPet.payload.request.SignInRequest;
-import cat.itacademy.s05.t02.VirtualPet.payload.request.SignUpRequest;
-import cat.itacademy.s05.t02.VirtualPet.payload.response.JwtResponse;
+import cat.itacademy.s05.t02.VirtualPet.dto.request.SignInRequest;
+import cat.itacademy.s05.t02.VirtualPet.dto.request.SignUpRequest;
+import cat.itacademy.s05.t02.VirtualPet.dto.response.JwtResponse;
 
 public interface AuthenticationService {
 

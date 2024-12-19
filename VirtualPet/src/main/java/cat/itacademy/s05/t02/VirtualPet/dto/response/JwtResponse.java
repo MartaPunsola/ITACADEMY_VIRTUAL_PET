@@ -1,4 +1,4 @@
-package cat.itacademy.s05.t02.VirtualPet.payload.response;
+package cat.itacademy.s05.t02.VirtualPet.dto.response;
 
 import lombok.*;
 

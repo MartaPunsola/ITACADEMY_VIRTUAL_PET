@@ -2,9 +2,11 @@ package cat.itacademy.s05.t02.VirtualPet.model;
 
 
 import cat.itacademy.s05.t02.VirtualPet.model.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(min = 4, max = 20)
     private String username;
 
     @NotBlank
@@ -40,12 +43,15 @@ public class User implements UserDetails {
     private String email;
 
     @NotBlank
-    @Size(max = 120)
+    @Size(min = 8, max = 120)
+    //@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$")
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role; //o modificar a Set? Vull que els usuaris tinguin més d'un rol??
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Relació un a molts
+    private List<Pet> pets = new ArrayList<>();
 
 
     @Override

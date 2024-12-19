@@ -18,8 +18,9 @@ public class AdminInitializer {
             if (userRepository.findByEmail("admin@example.com").isEmpty()) {
                 // Crea l'usuari ADMIN si no existeix
                 User adminUser = new User();
+                adminUser.setUsername("admin");
                 adminUser.setEmail("admin@example.com");
-                adminUser.setPassword(passwordEncoder.encode("adminpassword")); // Encripta la contrasenya
+                adminUser.setPassword(passwordEncoder.encode("adminpassword2")); // Encripta la contrasenya
                 adminUser.setRole(Role.ROLE_ADMIN); // Assigna el rol ADMIN
                 userRepository.save(adminUser);
                 //System.out.println("Usuari ADMIN creat amb èxit.");

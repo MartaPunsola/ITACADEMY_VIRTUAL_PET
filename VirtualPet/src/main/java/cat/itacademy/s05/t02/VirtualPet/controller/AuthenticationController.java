@@ -1,8 +1,8 @@
 package cat.itacademy.s05.t02.VirtualPet.controller;
 
-import cat.itacademy.s05.t02.VirtualPet.payload.request.SignInRequest;
-import cat.itacademy.s05.t02.VirtualPet.payload.request.SignUpRequest;
-import cat.itacademy.s05.t02.VirtualPet.payload.response.JwtResponse;
+import cat.itacademy.s05.t02.VirtualPet.dto.request.SignInRequest;
+import cat.itacademy.s05.t02.VirtualPet.dto.request.SignUpRequest;
+import cat.itacademy.s05.t02.VirtualPet.dto.response.JwtResponse;
 import cat.itacademy.s05.t02.VirtualPet.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,15 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    //fer swagger!!
+
     @PostMapping("/signup")
-    public ResponseEntity<JwtResponse> signup(@RequestBody SignUpRequest request) {
+    public ResponseEntity<JwtResponse> signup(@RequestBody SignUpRequest request) { //valid
         return ResponseEntity.ok(authenticationService.signup(request));
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> signin(@RequestBody SignInRequest request) {
+    public ResponseEntity<JwtResponse> signin(@RequestBody SignInRequest request) { //valid
         return ResponseEntity.ok(authenticationService.signin(request));
     }
 }

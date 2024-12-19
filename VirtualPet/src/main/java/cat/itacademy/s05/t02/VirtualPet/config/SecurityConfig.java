@@ -36,6 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/pets/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/pets/**").permitAll() //revisar que no interfereixi amb admin
                         //ampliar en funció dels endpoints
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

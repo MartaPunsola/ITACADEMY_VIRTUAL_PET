@@ -1,4 +1,4 @@
-package cat.itacademy.s05.t02.VirtualPet.payload.request;
+package cat.itacademy.s05.t02.VirtualPet.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class SignInRequest {
 
-    @NotBlank
+    @NotBlank(message = "Email is required.")
     private String email;
-    @NotBlank
+    @NotBlank(message = "Password is required.")
     private String password;
 }

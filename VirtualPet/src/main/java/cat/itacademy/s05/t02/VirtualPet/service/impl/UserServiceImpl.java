@@ -1,5 +1,6 @@
 package cat.itacademy.s05.t02.VirtualPet.service.impl;
 
+import cat.itacademy.s05.t02.VirtualPet.exception.custom.NoUsersException;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
 import cat.itacademy.s05.t02.VirtualPet.repository.UserRepository;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,12 +46,26 @@ public class UserServiceImpl implements UserService {
         };
     }
 
-    //mètode find All
-    /*public List<User> allUsers() {
-        List<User> users = new ArrayList<>();
-
-        userRepository.findAll().forEach(users::add);
-
+    //mètode find All; cal??? no el demana l'enunciat!
+    @Override
+    public List<User> allUsers() {
+        List<User> users = userRepository.findAll();
+        if(users.isEmpty()) {
+            throw new NoUsersException("There are no registered users at the moment.");
+        }
         return users;
-    }*/
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
 }

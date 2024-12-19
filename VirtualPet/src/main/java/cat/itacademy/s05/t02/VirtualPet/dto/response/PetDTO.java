@@ -1,11 +1,11 @@
-package cat.itacademy.s05.t02.VirtualPet.model;
+package cat.itacademy.s05.t02.VirtualPet.dto.response;
 
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetAccessory;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetColor;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetLocation;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,36 +18,18 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "pets")
-public class Pet {
+public class PetDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotBlank
+    private String username;
     private String name;
-
-    @Enumerated(EnumType.STRING)
     private PetColor color;
-
-    @Enumerated(EnumType.STRING)
     private PetType type;
-
     private int happiness;
     private int energy_level;
     private int hunger;
-
-    //anotar per la base de dades
     private boolean isAsleep;
-
-    @Enumerated(EnumType.STRING)
     private PetLocation location;
     private Set<PetAccessory> accessories;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // La FK a la taula "users"
-    @JsonIgnore
-    private User user;
+
 }

@@ -23,10 +23,10 @@ public class JwtServiceImpl implements JwtService {
     private static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
     //@Slf4j es pot posar a la classe i no caldria declarar...
 
-    @Value("${token.signing.key}") //???personalitzar; ha de coincidir amb properties
+    @Value("${token.signing.key}")
     private String secretKey;
 
-    @Value("${token.signing.expiration}") //???personalitzar; ha de coincidir amb properties
+    @Value("${token.signing.expiration}")
     private long jwtExpiration;
 
     @Override
@@ -64,6 +64,14 @@ public class JwtServiceImpl implements JwtService {
             .expiration(new Date(System.currentTimeMillis() + expiration))
             .signWith(getSignInKey())
             .compact();*/
+
+        /*.subject(user.getUsername())
+                .claim("id", user.getId())
+                .claim("role", role)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+                .signWith(getSignKey())
+                .compact();*/
     }
 
     private Key getSignInKey() {
@@ -92,6 +100,12 @@ public class JwtServiceImpl implements JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        /*return Jwts.parser()
+                .verifyWith(getSignKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();*/
     }
 
 
