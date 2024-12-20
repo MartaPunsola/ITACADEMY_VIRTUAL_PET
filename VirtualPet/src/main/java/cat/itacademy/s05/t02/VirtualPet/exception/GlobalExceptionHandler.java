@@ -49,15 +49,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoPetsException.class)
     public ResponseEntity<ErrorResponse> handleException(NoPetsException e) {
         log.error("Error: {}", e.getMessage()); //????
-        ErrorResponse error = new ErrorResponse(HttpStatus.NO_CONTENT.value(), e.getMessage(), System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(error);
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(NoUsersException.class)
     public ResponseEntity<ErrorResponse> handleException(NoUsersException e) {
         log.error("Error: {}", e.getMessage()); //????
-        ErrorResponse error = new ErrorResponse(HttpStatus.NO_CONTENT.value(), e.getMessage(), System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(error);
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

@@ -14,19 +14,14 @@ public class AdminInitializer {
     @Bean
     public CommandLineRunner initAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            // Verifica si l'usuari ADMIN ja existeix
             if (userRepository.findByEmail("admin@example.com").isEmpty()) {
-                // Crea l'usuari ADMIN si no existeix
                 User adminUser = new User();
                 adminUser.setUsername("admin");
                 adminUser.setEmail("admin@example.com");
-                adminUser.setPassword(passwordEncoder.encode("adminpassword2")); // Encripta la contrasenya
-                adminUser.setRole(Role.ROLE_ADMIN); // Assigna el rol ADMIN
+                adminUser.setPassword(passwordEncoder.encode("adminpassword2"));
+                adminUser.setRole(Role.ADMIN);
                 userRepository.save(adminUser);
-                //System.out.println("Usuari ADMIN creat amb èxit.");
-            } /*else {
-                System.out.println("L'usuari ADMIN ja existeix.");
-            }*/
+            }
         };
     }
 

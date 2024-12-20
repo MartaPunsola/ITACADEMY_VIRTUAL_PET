@@ -2,6 +2,7 @@ package cat.itacademy.s05.t02.VirtualPet.config;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import cat.itacademy.s05.t02.VirtualPet.model.enums.Role;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,9 +36,10 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/pets/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/pets/**").permitAll() //revisar que no interfereixi amb admin
+                        .requestMatchers("/api/v1/admin/**").hasRole(Role.ADMIN.name()) //o .hasRole??
+                        .requestMatchers("/api/v1/pets/admin/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/api/v1/pets/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) //revisar que no interfereixi amb admin
+                        //hauria de posar user a pets
                         //ampliar en funció dels endpoints
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

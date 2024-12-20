@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface UserService {
 
+    //posar aquí els throws als mètodes que llancen throw new????
+
     UserDetailsService userDetailsService();
     List<User> allUsers() throws NoUsersException;
     //UserDetails loadUserByEmail(String username);

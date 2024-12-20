@@ -49,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = User.builder().username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_USER).build();
+                .role(Role.USER).build();
         userRepository.save(user);
         var jwt = jwtService.generateToken(user);
         //validate token???

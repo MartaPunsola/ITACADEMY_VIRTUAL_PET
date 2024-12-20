@@ -38,8 +38,6 @@ public class Pet {
     private int happiness;
     private int energy_level;
     private int hunger;
-
-    //anotar per la base de dades
     private boolean isAsleep;
 
     @Enumerated(EnumType.STRING)
@@ -47,7 +45,7 @@ public class Pet {
     private Set<PetAccessory> accessories;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // La FK a la taula "users"
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
 }

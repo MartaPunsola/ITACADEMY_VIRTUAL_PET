@@ -5,6 +5,7 @@ import cat.itacademy.s05.t02.VirtualPet.model.User;
 import cat.itacademy.s05.t02.VirtualPet.repository.UserRepository;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
             public UserDetails loadUserByUsername(String username) {
                 return userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
 
                 /*User user = userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found."));

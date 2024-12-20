@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @NotBlank
     @Size(max = 50)
     @Email
-    @Column(unique = true) //??
+    @Column(unique = true)
     private String email;
 
     @NotBlank
@@ -48,15 +48,19 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; //o modificar a Set? Vull que els usuaris tinguin més d'un rol??
+    private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Relació un a molts
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> pets = new ArrayList<>();
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        //return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        /*return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .toList();*/
     }
 
     @Override
