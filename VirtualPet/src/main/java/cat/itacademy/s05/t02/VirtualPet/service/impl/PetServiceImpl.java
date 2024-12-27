@@ -9,15 +9,18 @@ import cat.itacademy.s05.t02.VirtualPet.exception.custom.NoPetsException;
 import cat.itacademy.s05.t02.VirtualPet.exception.custom.PetNotFoundException;
 import cat.itacademy.s05.t02.VirtualPet.model.Pet;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
+import cat.itacademy.s05.t02.VirtualPet.model.enums.PetInteraction;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetLocation;
 import cat.itacademy.s05.t02.VirtualPet.repository.PetRepository;
 import cat.itacademy.s05.t02.VirtualPet.repository.UserRepository;
+import cat.itacademy.s05.t02.VirtualPet.service.PetInteractionService;
 import cat.itacademy.s05.t02.VirtualPet.service.PetService;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +34,7 @@ public class PetServiceImpl implements PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PetInteractionService petInteractionService;
 
     //chatgpt user logejat: opció per buscar el user que està logejat ara mateix
     //provar quan tingui el front; si no, es queda iqual
@@ -44,13 +48,16 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public PetDTO createPet(CreatePetRequest request) {
-        User currentUser = userService.findUserById(request.getUserId());
+        //User currentUser = userService.findUserById(request.getUserId());
+        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.findUserByEmail(currentUserEmail);
 
         if(petRepository.findByUserIdAndName(currentUser.getId(), request.getName()).isPresent()) {
             throw new NameAlreadyExistsException("This name is not available.");
         }
 
         Pet newPet = buildPet(request, currentUser);
+        //si guardo el per al mètode buildPet, cal que el posi al user o es fa directaemnt??
         currentUser.getPets().add(newPet);
         userRepository.save(currentUser); //es pot fer un mètode al userService per no haver de posar el repo aquí: val la pena??
 
@@ -63,7 +70,7 @@ public class PetServiceImpl implements PetService {
                 .type(request.getType())
                 .color(request.getColor())
                 .happiness(40)
-                .energy_level(60)
+                .energyLevel(60)
                 .hunger(20)
                 .accessories(new HashSet<>())
                 .location(PetLocation.HOME)
@@ -112,7 +119,7 @@ public class PetServiceImpl implements PetService {
         return pets;
     }
 
-    @Override
+    @Override //crec que el puc tornar a fer private i treure'l de la interface
     public PetDTO buildPetDTO(Pet pet) {
         return PetDTO.builder()
                 .username(pet.getUser().getUsername())
@@ -120,7 +127,7 @@ public class PetServiceImpl implements PetService {
                 .color(pet.getColor())
                 .type(pet.getType())
                 .happiness(pet.getHappiness())
-                .energy_level(pet.getEnergy_level())
+                .energyLevel(pet.getEnergyLevel())
                 .hunger(pet.getHunger())
                 .isAsleep(pet.isAsleep())
                 .location(pet.getLocation())
@@ -129,17 +136,25 @@ public class PetServiceImpl implements PetService {
         //el JSON object no em retorna l'id, diu que és null
     }
 
-    //update
-    /*Permet als usuaris cuidar i personalitzar les seves mascotes virtuals. Poden alimentar-les, jugar amb elles, comprar accessoris divertits i canviar el seu entorn virtual per mantenir-les felices i saludables.
-     */
     @Override
+    @Transactional //??
     public PetDTO updatePet(UpdatePetRequest request) {
         Pet foundPet = findPet(request.getUserId(), request.getName());
-        //implementar les interaccions necessàries
 
+        if(foundPet.getLocation() != request.getLocation()) {
+            petInteractionService.changeLocation(foundPet, request.getLocation());
+        }
+        if(!foundPet.getAccessories().contains(request.getAccessory())) { //cal?? redundant
+           petInteractionService.changeAccessories(foundPet, request.getAccessory());
+        }
+        if(request.getPetInteraction() != PetInteraction.NONE) { //?? cal none?? puc fer que el camp sigui null?
+            petInteractionService.interact(foundPet, request.getPetInteraction());
+        }
 
-        return buildPetDTO(foundPet); //caldrà modificar
-}
+        //guardar els canvis al repositori
+        petRepository.save(foundPet);
+        return buildPetDTO(foundPet);
+    }
 
     @Override
     public void deletePet(FindPetRequest findPetRequest) { //o per name?

@@ -1,5 +1,6 @@
 package cat.itacademy.s05.t02.VirtualPet.service.impl;
 
+import cat.itacademy.s05.t02.VirtualPet.dto.response.UserDTO;
 import cat.itacademy.s05.t02.VirtualPet.exception.custom.NoUsersException;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
 import cat.itacademy.s05.t02.VirtualPet.repository.UserRepository;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,5 +72,13 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
+
+    @Override
+    public UserDTO buildUserDTO(User user) {
+        return UserDTO.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
     }
 }

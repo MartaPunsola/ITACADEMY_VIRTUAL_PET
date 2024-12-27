@@ -4,5 +4,6 @@ public enum PetInteraction {
 
     NONE(),
     FEED(),
-    SLEEP();
+    SLEEP(),
+    PLAY();
 }

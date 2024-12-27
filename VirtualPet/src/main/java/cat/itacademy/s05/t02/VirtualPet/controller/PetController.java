@@ -46,8 +46,7 @@ public class PetController {
         //o status?
     }
 
-    //un únic endpoint o un diferent per cada modificació?
-    @PutMapping("/update") //un altre nom??
+    @PutMapping("/update")
     public ResponseEntity<PetDTO> updatePet(@RequestBody UpdatePetRequest request) {
         return ResponseEntity.ok(petService.updatePet(request));
         //o status?

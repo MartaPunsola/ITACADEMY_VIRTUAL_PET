@@ -6,7 +6,7 @@ public enum PetType {
     CAPYBARA(),
     FLAMINGO(),
     SHEEP(),
-    TUCAN(),
+    TOUCAN(),
     RABBIT();
 
     //option 2

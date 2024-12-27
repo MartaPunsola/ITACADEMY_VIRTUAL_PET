@@ -1,5 +1,6 @@
 package cat.itacademy.s05.t02.VirtualPet.service;
 
+import cat.itacademy.s05.t02.VirtualPet.dto.response.UserDTO;
 import cat.itacademy.s05.t02.VirtualPet.exception.custom.NoUsersException;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,5 +18,6 @@ public interface UserService {
     //UserDetails loadUserByEmail(String username);
     User findUserByEmail(String email);
     User findUserById(Long id);
+    UserDTO buildUserDTO(User user);
 
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 public class CreatePetRequest {
 
     //només per provar
-    private Long userId;
+    //private Long userId;
     @NotBlank
     private String name;
     private PetType type;

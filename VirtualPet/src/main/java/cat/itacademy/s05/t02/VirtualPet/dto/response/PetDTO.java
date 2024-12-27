@@ -25,7 +25,7 @@ public class PetDTO {
     private PetColor color;
     private PetType type;
     private int happiness;
-    private int energy_level;
+    private int energyLevel;
     private int hunger;
     private boolean isAsleep;
     private PetLocation location;

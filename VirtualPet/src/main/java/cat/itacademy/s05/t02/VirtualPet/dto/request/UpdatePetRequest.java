@@ -14,6 +14,6 @@ public class UpdatePetRequest {
     private Long userId;
     private String name;
     private PetInteraction petInteraction;
-    private Set<PetAccessory> accessories;
+    private PetAccessory accessory;
     private PetLocation location;
 }

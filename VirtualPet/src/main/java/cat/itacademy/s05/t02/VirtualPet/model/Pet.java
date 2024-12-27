@@ -36,7 +36,9 @@ public class Pet {
     private PetType type;
 
     private int happiness;
-    private int energy_level;
+
+    //@Column(name = "energy_level")
+    private int energyLevel;
     private int hunger;
     private boolean isAsleep;
 
