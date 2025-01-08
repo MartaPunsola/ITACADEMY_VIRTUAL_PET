@@ -1,8 +1,6 @@
 package cat.itacademy.s05.t02.VirtualPet.service.impl;
 
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import cat.itacademy.s05.t02.VirtualPet.service.JwtService;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,9 +15,6 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-
-    private static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class); //ara no s'utilitza
-    //@Slf4j es pot posar a la classe i no caldria declarar...
 
     @Value("${token.signing.key}")
     private String secretKey;
@@ -39,7 +34,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        return buildToken(userDetails, jwtExpiration); //treure hashmap
+        return buildToken(userDetails, jwtExpiration);
     }
 
     private String buildToken(UserDetails userDetails, long expiration) {
@@ -52,7 +47,7 @@ public class JwtServiceImpl implements JwtService {
             .subject(userDetails.getUsername()).claim("role", role)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + expiration))
-            .signWith(getSignInKey()) //SignatureAlgorithm.HS256 cal???
+            .signWith(getSignInKey())
             .compact();
     }
 

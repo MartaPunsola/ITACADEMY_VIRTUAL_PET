@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class FindPetRequest {
 
-    //private Long userId;
     private String name;
 }

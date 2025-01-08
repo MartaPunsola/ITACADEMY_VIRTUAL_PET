@@ -13,24 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/admin") //només l'admin hi podrà accedir
+@RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-public class UserController { //canviar nom a AdminController??
+public class UserController {
 
     private final UserService userService;
 
     //fer swagger!!
-
-    /*@GetMapping("/me")
-    public ResponseEntity<User> authenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        User currentUser = (User) authentication.getPrincipal();
-
-        return ResponseEntity.ok(currentUser);
-    }*/
-
-    //veure tots els users
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> allUsers() {

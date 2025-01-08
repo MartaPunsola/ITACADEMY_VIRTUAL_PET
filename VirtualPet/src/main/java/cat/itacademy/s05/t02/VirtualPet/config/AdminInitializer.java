@@ -25,10 +25,4 @@ public class AdminInitializer {
         };
     }
 
-    //una altra opció
-    /*@Component
-@RequiredArgsConstructor
-public class DataLoader implements CommandLineRunner {
-@Override
-    public void run(String... args) {}*/
 }

@@ -4,7 +4,6 @@ import cat.itacademy.s05.t02.VirtualPet.dto.request.CreatePetRequest;
 import cat.itacademy.s05.t02.VirtualPet.dto.request.FindPetRequest;
 import cat.itacademy.s05.t02.VirtualPet.dto.request.UpdatePetRequest;
 import cat.itacademy.s05.t02.VirtualPet.dto.response.PetDTO;
-import cat.itacademy.s05.t02.VirtualPet.model.Pet;
 import cat.itacademy.s05.t02.VirtualPet.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class PetController {
     //fer swagger!!
     private final PetService petService;
 
-    //create
+
     @PostMapping("/new")
     public ResponseEntity<PetDTO> createPet(@RequestBody @Valid CreatePetRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(petService.createPet(request));
@@ -31,25 +30,21 @@ public class PetController {
     @GetMapping("/getOne")
     public ResponseEntity<PetDTO> getOnePet(@RequestParam String name) {
         return ResponseEntity.ok(petService.getOnePetForUser(name));
-        //o status?
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<PetDTO>> getAllMyPets() {
         return ResponseEntity.ok(petService.getAllPetsForUser());
-        //o status?
     }
 
-    @GetMapping("/admin/getAllPets") //només podrà accedir-hi l'admin
+    @GetMapping("/admin/getAllPets")
     public ResponseEntity<List<PetDTO>> getAllPets() {
         return ResponseEntity.ok(petService.getAllPets());
-        //o status?
     }
 
     @PutMapping("/update")
     public ResponseEntity<PetDTO> updatePet(@RequestBody UpdatePetRequest request) {
         return ResponseEntity.ok(petService.updatePet(request));
-        //o status?
     }
 
     @DeleteMapping("/delete")

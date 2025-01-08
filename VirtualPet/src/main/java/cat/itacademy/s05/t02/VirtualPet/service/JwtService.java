@@ -1,6 +1,5 @@
 package cat.itacademy.s05.t02.VirtualPet.service;
 
-import cat.itacademy.s05.t02.VirtualPet.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtService {

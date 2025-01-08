@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager; //??
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public JwtResponse signup(@Valid SignUpRequest request) { //l'anotació valid millor al controller
@@ -37,25 +37,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         //si vull que saltin junts, haurien de tenir el mateix tipus d'exception
 
-        /*// Comprovar si el username o email ja existeixen
-    if (userRepository.existsByUsername(request.getUsername())) {
-        throw new IllegalArgumentException("Username already exists.");
-    }
-
-    if (userRepository.existsByEmail(request.getEmail())) {
-        throw new IllegalArgumentException("Email already exists.");
-    }*/
-        //retocar el tema exceptions i customitzar (o no), i afegir al global exception
         var user = User.builder().username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER).build();
         userRepository.save(user);
         var jwt = jwtService.generateToken(user);
-        //validate token???
+
         return JwtResponse.builder().token(jwt).build();
-        //abans de retornar la resposta, he de gestionar el rol assignat al user
-        //si el username o l'email ja estan registrats, exception
     }
 
     @Override
@@ -63,11 +52,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password.")); //???
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
         var jwt = jwtService.generateToken(user);
-        //validate token???
+
         return JwtResponse.builder().token(jwt).build();
     }
 
-    //refreshToken??? vid. vídeo minut 28 aprox
 }

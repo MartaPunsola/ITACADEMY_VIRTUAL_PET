@@ -7,14 +7,11 @@ import cat.itacademy.s05.t02.VirtualPet.model.enums.PetLocation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PetInteractionService {
-
-    //calen atributs??
 
 
     public void changeAccessories(Pet pet, PetAccessory accessory) {
@@ -23,67 +20,18 @@ public class PetInteractionService {
         if (accessories.contains(accessory)) {
             accessories.remove(accessory);
             pet.setHappiness(decreaseState(pet.getHappiness()));
+            //log.info("Accessory {} removed from pet {}. Happiness decreased to {}", accessory, pet.getName(), pet.getHappiness());
         } else {
             accessories.add(accessory);
             pet.setHappiness(increaseState(pet.getHappiness()));
+            // log.info("Accessory {} added to pet {}. Happiness increased to {}", a, pet.getName(), pet.getHappiness());
         }
 
-        /*Optional.of(accessory)
-                .filter(a -> !accessories.contains(a))  // Afegir si no existeix
-                .ifPresentOrElse(a -> {
-                    accessories.add(a);
-                    pet.setHappiness(increaseState(pet.getHappiness()));
-                   // log.info("Accessory {} added to pet {}. Happiness increased to {}", a, pet.getName(), pet.getHappiness());
-                }, () -> {
-                    accessories.remove(accessory);
-                    pet.setHappiness(decreaseState(pet.getHappiness()));
-                    //log.info("Accessory {} removed from pet {}. Happiness decreased to {}", accessory, pet.getName(), pet.getHappiness());
-                });*/
-
-
         wakeUp(pet);
-
-        // Afegir accessoris nous
-        /*for (PetAccessory accessory : requestedAccessories) {
-            if (!currentAccessories.contains(accessory)) {
-                currentAccessories.add(accessory);
-                increaseState(pet, pet.getHappiness());
-                //+ happiness
-            } else {
-                throw new IllegalStateException("The pet already has " + accessory.name());
-            }
-        }*/
-
-        // Eliminar accessoris no inclosos a la nova llista
-        //currentAccessories.removeIf(accessory -> !requestedAccessories.contains(accessory));
-        //- happiness
-
-        //pet.setAccessories(currentAccessories);  // Assegura que s'actualitza el set
-
-
-        // Opcional: registrar l'acció
-        //log.info("Updated accessories for pet {}: {}", pet.getName(), pet.getAccessories());
     }
 
-    //addAccessory
-    public void addAccessory(Pet pet) {
-        //comprovar que no el té i afegir
-        pet.setHappiness(increaseState(pet.getHappiness())); //augmentar 20%
-        //return petService.buildPetDTO(pet);
-    }
-
-    //removeAccessory
-    public void removeAccessory(Pet pet) {
-
-        //decreaseState(pet, pet.getHappiness()); //disminuir 20% happiness
-        //return petService.buildPetDTO(pet);
-    }
-
-    //changeLocation
     public void changeLocation(Pet pet, PetLocation newLocation) {
         pet.setLocation(newLocation);
-        //depèn de la location, modificar els estats
-        //cal que retorni un Pet o pot tornar void??
         wakeUp(pet);
     }
     

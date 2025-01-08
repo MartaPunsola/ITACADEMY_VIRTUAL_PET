@@ -75,8 +75,6 @@ public class GlobalExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(error ->
                 fieldErrors.put(error.getField(), error.getDefaultMessage())
         );
-        /*Map<String, String> fieldErrors = e.getBindingResult().getFieldErrors().stream()
-        .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));*/
 
         // Crear un objecte ErrorResponse personalitzat
         ErrorResponse error = new ErrorResponse(

@@ -6,5 +6,5 @@ public enum PetColor {
     BLACK(),
     PINK(),
     GREEN();
-    //etc.
+
 }

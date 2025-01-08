@@ -6,19 +6,14 @@ import cat.itacademy.s05.t02.VirtualPet.model.User;
 import cat.itacademy.s05.t02.VirtualPet.repository.UserRepository;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,25 +29,10 @@ public class UserServiceImpl implements UserService {
                 return userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-
-                /*User user = userRepository.findByEmail(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-                //cal aplicar o ja està implícit a algun lloc?
-                // Mapeja els rols del teu usuari al tipus GrantedAuthority
-                Collection<GrantedAuthority> authorities = user.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.name()))
-                        .toList();
-
-                return new org.springframework.security.core.userdetails.User(
-                        user.getEmail(),
-                        user.getPassword(),
-                        authorities
-                );*/
             }
         };
     }
 
-    //mètode find All; cal??? no el demana l'enunciat!
     @Override
     public List<User> allUsers() {
         List<User> users = userRepository.findAll();

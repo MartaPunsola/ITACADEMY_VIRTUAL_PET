@@ -9,13 +9,4 @@ public enum PetType {
     TOUCAN(),
     RABBIT();
 
-    //option 2
-    /*PENGUIN(),
-    SNAKE(),
-    WHALE();
-
-     */
-
-
-
 }

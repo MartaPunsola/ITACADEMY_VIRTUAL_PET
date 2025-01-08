@@ -2,7 +2,6 @@ package cat.itacademy.s05.t02.VirtualPet.model;
 
 
 import cat.itacademy.s05.t02.VirtualPet.model.enums.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -56,11 +55,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //return List.of(new SimpleGrantedAuthority(role.name()));
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
-        /*return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                .toList();*/
     }
 
     @Override

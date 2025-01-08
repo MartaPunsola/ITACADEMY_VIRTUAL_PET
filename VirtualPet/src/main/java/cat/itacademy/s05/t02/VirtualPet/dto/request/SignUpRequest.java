@@ -17,7 +17,7 @@ public class SignUpRequest {
     private String username;
 
     @NotBlank(message = "Email is required.")
-    @Size(max = 50) //cal?? treure de user tb
+    @Size(max = 50)
     @Email(message = "Invalid email address.")
     private String email;
 
