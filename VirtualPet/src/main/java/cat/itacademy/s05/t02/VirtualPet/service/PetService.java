@@ -18,9 +18,9 @@ public interface PetService {
     //buildDTO
     PetDTO buildPetDTO(Pet pet);
     //getOnePet
-    PetDTO getOnePetForUser(FindPetRequest findPetRequest);
+    PetDTO getOnePetForUser(String petName);
     //getUserPets
-    List<PetDTO> getAllPetsForUser(Long userId);
+    List<PetDTO> getAllPetsForUser();
     //getAllPets
     List<PetDTO> getAllPets();
     //updatePet

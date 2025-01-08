@@ -11,7 +11,7 @@ import java.util.Set;
 public class UpdatePetRequest {
 
     //calen els dos primers? o es pot barrejar amb FindPetRequest??
-    private Long userId;
+   // private Long userId;
     private String name;
     private PetInteraction petInteraction;
     private PetAccessory accessory;

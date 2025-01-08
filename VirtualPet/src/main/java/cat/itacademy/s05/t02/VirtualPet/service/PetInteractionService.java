@@ -20,17 +20,26 @@ public class PetInteractionService {
     public void changeAccessories(Pet pet, PetAccessory accessory) {
         Set<PetAccessory> accessories = pet.getAccessories();
 
-        Optional.of(accessory)
+        if (accessories.contains(accessory)) {
+            accessories.remove(accessory);
+            pet.setHappiness(decreaseState(pet.getHappiness()));
+        } else {
+            accessories.add(accessory);
+            pet.setHappiness(increaseState(pet.getHappiness()));
+        }
+
+        /*Optional.of(accessory)
                 .filter(a -> !accessories.contains(a))  // Afegir si no existeix
                 .ifPresentOrElse(a -> {
                     accessories.add(a);
-                    increaseState(pet, pet.getHappiness());
+                    pet.setHappiness(increaseState(pet.getHappiness()));
                    // log.info("Accessory {} added to pet {}. Happiness increased to {}", a, pet.getName(), pet.getHappiness());
                 }, () -> {
                     accessories.remove(accessory);
-                    decreaseState(pet, pet.getHappiness());
+                    pet.setHappiness(decreaseState(pet.getHappiness()));
                     //log.info("Accessory {} removed from pet {}. Happiness decreased to {}", accessory, pet.getName(), pet.getHappiness());
-                });
+                });*/
+
 
         wakeUp(pet);
 
@@ -59,14 +68,14 @@ public class PetInteractionService {
     //addAccessory
     public void addAccessory(Pet pet) {
         //comprovar que no el té i afegir
-        increaseState(pet, pet.getHappiness()); //augmentar 20%
+        pet.setHappiness(increaseState(pet.getHappiness())); //augmentar 20%
         //return petService.buildPetDTO(pet);
     }
 
     //removeAccessory
     public void removeAccessory(Pet pet) {
 
-        decreaseState(pet, pet.getHappiness()); //disminuir 20% happiness
+        //decreaseState(pet, pet.getHappiness()); //disminuir 20% happiness
         //return petService.buildPetDTO(pet);
     }
 
@@ -77,8 +86,7 @@ public class PetInteractionService {
         //cal que retorni un Pet o pot tornar void??
         wakeUp(pet);
     }
-
-    //interact
+    
     public void interact(Pet pet, PetInteraction interaction) {
         switch(interaction) {
             case FEED -> feed(pet);
@@ -90,40 +98,42 @@ public class PetInteractionService {
     private void wakeUp(Pet pet) {
         if(pet.isAsleep()) {
             pet.setAsleep(false);
-        } //es pot simplificar??
+        }
     }
 
     private void feed(Pet pet) {
         wakeUp(pet);
-        decreaseState(pet, pet.getHunger());
-        increaseState(pet, pet.getHappiness());
-        increaseState(pet, pet.getEnergyLevel());
+        pet.setHunger(decreaseState(pet.getHunger()));
+        pet.setHappiness(increaseState(pet.getHappiness()));
+        pet.setEnergyLevel(increaseState(pet.getEnergyLevel()));
     }
 
     private void sleep(Pet pet) {
-        if(!pet.isAsleep()) { //??
+        if(!pet.isAsleep()) {
             pet.setAsleep(true);
-            increaseState(pet, pet.getHappiness());
-            increaseState(pet, pet.getEnergyLevel());
+            pet.setHappiness(increaseState(pet.getHappiness()));
+            pet.setEnergyLevel(increaseState(pet.getEnergyLevel()));
+            pet.setLocation(PetLocation.HOME);
         }
     }
 
     private void play(Pet pet) {
         wakeUp(pet);
-        increaseState(pet, pet.getHappiness());
-        decreaseState(pet, pet.getEnergyLevel());
+        pet.setHappiness(increaseState(pet.getHappiness()));
+        pet.setEnergyLevel(decreaseState(pet.getEnergyLevel()));
+        pet.setHunger(increaseState(pet.getHunger()));
     }
 
-    private void increaseState(Pet pet, int state) {
-        int increment = (int) (state * 0.2);
+    private int increaseState(int state) {
+        int increment = (int) (state * 0.1);
         int newState = state + increment;
-        pet.setHappiness(Math.min(newState, 100));
+        return Math.min(newState, 100);
     }
 
-    private void decreaseState(Pet pet, int state) {
-        int decrement = (int) (state * 0.2);
+    private int decreaseState(int state) {
+        int decrement = (int) (state * 0.1);
         int newState = state - decrement;
-        pet.setHappiness(Math.min(newState, 0));
+        return Math.max(newState, 0);
     }
 
 }

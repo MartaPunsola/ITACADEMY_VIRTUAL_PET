@@ -7,6 +7,7 @@ import cat.itacademy.s05.t02.VirtualPet.repository.UserRepository;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -69,6 +70,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findCurrentUser() {
+        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findUserByEmail(currentUserEmail);
+    }
+
+    @Override
     public User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
@@ -77,8 +84,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO buildUserDTO(User user) {
         return UserDTO.builder()
-                .username(user.getUsername())
+                .username(user.getName())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 }

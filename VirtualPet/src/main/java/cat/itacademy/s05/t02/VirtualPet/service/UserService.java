@@ -17,6 +17,7 @@ public interface UserService {
     List<User> allUsers() throws NoUsersException;
     //UserDetails loadUserByEmail(String username);
     User findUserByEmail(String email);
+    User findCurrentUser();
     User findUserById(Long id);
     UserDTO buildUserDTO(User user);
 

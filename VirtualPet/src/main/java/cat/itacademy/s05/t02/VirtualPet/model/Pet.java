@@ -12,7 +12,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -37,17 +39,19 @@ public class Pet {
 
     private int happiness;
 
-    //@Column(name = "energy_level")
     private int energyLevel;
     private int hunger;
     private boolean isAsleep;
 
     @Enumerated(EnumType.STRING)
     private PetLocation location;
+
+    @Enumerated(EnumType.STRING)
     private Set<PetAccessory> accessories;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
+
 }

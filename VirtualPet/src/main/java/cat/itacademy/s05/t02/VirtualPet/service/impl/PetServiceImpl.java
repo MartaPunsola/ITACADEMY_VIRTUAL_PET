@@ -9,6 +9,7 @@ import cat.itacademy.s05.t02.VirtualPet.exception.custom.NoPetsException;
 import cat.itacademy.s05.t02.VirtualPet.exception.custom.PetNotFoundException;
 import cat.itacademy.s05.t02.VirtualPet.model.Pet;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
+import cat.itacademy.s05.t02.VirtualPet.model.enums.PetAccessory;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetInteraction;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetLocation;
 import cat.itacademy.s05.t02.VirtualPet.repository.PetRepository;
@@ -17,6 +18,7 @@ import cat.itacademy.s05.t02.VirtualPet.service.PetInteractionService;
 import cat.itacademy.s05.t02.VirtualPet.service.PetService;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService {
@@ -43,14 +46,11 @@ public class PetServiceImpl implements PetService {
     User currentUser = userService.findUserByEmail(currentUserEmail);
 }*/
 
-    //create
-    /*Permet als usuaris crear noves mascotes virtuals per cuidar i mimar. Poden triar entre una varietat de criatures, des de dracs fins a licorns, i fins i tot extraterrestres. Després, poden personalitzar el color, el nom i les característiques úniques de la seva mascota.*/
-
     @Override
     public PetDTO createPet(CreatePetRequest request) {
         //User currentUser = userService.findUserById(request.getUserId());
         String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.findUserByEmail(currentUserEmail);
+        User currentUser = userService.findCurrentUser();
 
         if(petRepository.findByUserIdAndName(currentUser.getId(), request.getName()).isPresent()) {
             throw new NameAlreadyExistsException("This name is not available.");
@@ -70,29 +70,26 @@ public class PetServiceImpl implements PetService {
                 .type(request.getType())
                 .color(request.getColor())
                 .happiness(40)
-                .energyLevel(60)
-                .hunger(20)
+                .energyLevel(50)
+                .hunger(60)
                 .accessories(new HashSet<>())
                 .location(PetLocation.HOME)
                 .user(user)
                 .build();
-        //newPet.setAccessoryPreferences(generateAccessoryPreferences());
-        //newPet.setLocationPreferences(generateLocationPreferences());
-        //return newPet;
     }
 
     //readOne (NO OBLIGATORI SEGONS L'ENUNCIAT)
     //buscar per id i mostrar totes les dades
     @Override
-    public PetDTO getOnePetForUser(FindPetRequest findPetRequest) {
-        Pet foundPet = findPet(findPetRequest.getUserId(), findPetRequest.getName());
+    public PetDTO getOnePetForUser(String petName) {
+        Pet foundPet = findPet(petName);
         return buildPetDTO(foundPet);
     }
 
     //readAllForUser
     @Override
-    public List<PetDTO> getAllPetsForUser(Long userId) {
-        User currentUser = userService.findUserById(userId);
+    public List<PetDTO> getAllPetsForUser() {
+        User currentUser = userService.findCurrentUser();
         if (currentUser.getPets() == null || currentUser.getPets().isEmpty()) {
             throw new NoPetsException("There are no pets to show.");
         }
@@ -139,31 +136,34 @@ public class PetServiceImpl implements PetService {
     @Override
     @Transactional //??
     public PetDTO updatePet(UpdatePetRequest request) {
-        Pet foundPet = findPet(request.getUserId(), request.getName());
+        Pet foundPet = findPet(request.getName());
 
         if(foundPet.getLocation() != request.getLocation()) {
             petInteractionService.changeLocation(foundPet, request.getLocation());
         }
-        if(!foundPet.getAccessories().contains(request.getAccessory())) { //cal?? redundant
+        if(request.getAccessory() != null) {
            petInteractionService.changeAccessories(foundPet, request.getAccessory());
+           log.info("Accessories after update: {}", foundPet.getAccessories());
         }
         if(request.getPetInteraction() != PetInteraction.NONE) { //?? cal none?? puc fer que el camp sigui null?
             petInteractionService.interact(foundPet, request.getPetInteraction());
         }
 
         //guardar els canvis al repositori
+        //foundPet.getAccessories().clear();
+        //foundPet.getAccessories().addAll(foundPet.getAccessories());
         petRepository.save(foundPet);
         return buildPetDTO(foundPet);
     }
 
     @Override
     public void deletePet(FindPetRequest findPetRequest) { //o per name?
-        Pet foundPet = findPet(findPetRequest.getUserId(), findPetRequest.getName());
+        Pet foundPet = findPet(findPetRequest.getName());
         petRepository.delete(foundPet);
     }
 
-    private Pet findPet(Long userId, String petName) {
-        User currentUser = userService.findUserById(userId);
+    private Pet findPet(String petName) {
+        User currentUser = userService.findCurrentUser();
         return petRepository.findByUserIdAndName(currentUser.getId(), petName)
                 .orElseThrow(() -> new PetNotFoundException("You have no pets under this name."));
     }

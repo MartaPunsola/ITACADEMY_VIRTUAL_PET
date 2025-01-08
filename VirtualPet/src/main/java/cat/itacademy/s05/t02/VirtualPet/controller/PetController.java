@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/pets") //tots els users tenen permisos / afegir pets?? modificar?
+@RequestMapping("/api/v1/pets")
 @RequiredArgsConstructor
 public class PetController {
 
@@ -29,14 +29,14 @@ public class PetController {
     }
 
     @GetMapping("/getOne")
-    public ResponseEntity<PetDTO> getOnePet(@RequestBody FindPetRequest findPetRequest) {
-        return ResponseEntity.ok(petService.getOnePetForUser(findPetRequest));
+    public ResponseEntity<PetDTO> getOnePet(@RequestParam String name) {
+        return ResponseEntity.ok(petService.getOnePetForUser(name));
         //o status?
     }
 
-    @GetMapping("/getAll/{id}")
-    public ResponseEntity<List<PetDTO>> getAllMyPets(@PathVariable("id") Long userId) { //o requestBody??
-        return ResponseEntity.ok(petService.getAllPetsForUser(userId));
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PetDTO>> getAllMyPets() {
+        return ResponseEntity.ok(petService.getAllPetsForUser());
         //o status?
     }
 
