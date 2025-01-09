@@ -17,7 +17,6 @@ import cat.itacademy.s05.t02.VirtualPet.service.PetInteractionService;
 import cat.itacademy.s05.t02.VirtualPet.service.PetService;
 import cat.itacademy.s05.t02.VirtualPet.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService {
@@ -96,7 +94,6 @@ public class PetServiceImpl implements PetService {
         }
         if(request.getAccessory() != null) {
            petInteractionService.changeAccessories(foundPet, request.getAccessory());
-           log.info("Accessories after update: {}", foundPet.getAccessories());
         }
         if(request.getPetInteraction() != PetInteraction.NONE) {
             petInteractionService.interact(foundPet, request.getPetInteraction());

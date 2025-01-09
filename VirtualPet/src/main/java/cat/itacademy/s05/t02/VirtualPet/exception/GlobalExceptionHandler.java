@@ -22,69 +22,64 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    //fer servir logger???
-    //es pot fer un mètode de creació de error response per no repetir codi
-
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(UsernameNotFoundException e) {
-        log.error("Error: {}", e.getMessage()); //????
+        log.error("User not found: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(PetNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(PetNotFoundException e) {
-        log.error("Error: {}", e.getMessage()); //????
+        log.error("Pet not found: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(NameAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleException(NameAlreadyExistsException e) {
-        log.error("Error: {}", e.getMessage()); //????
+        log.error("Duplicated name: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(NoPetsException.class)
     public ResponseEntity<ErrorResponse> handleException(NoPetsException e) {
-        log.error("Error: {}", e.getMessage()); //????
+        log.error("No pets found: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(NoUsersException.class)
     public ResponseEntity<ErrorResponse> handleException(NoUsersException e) {
-        log.error("Error: {}", e.getMessage()); //????
+        log.error("No users found: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleException(IllegalArgumentException e) {
-        log.error("Error: {}", e.getMessage()); //????
+        log.error("Illegal argument error: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException e) {
-        log.error("Error: {}", e.getMessage()); //????
-        // Crear un mapa d'errors amb els camps i missatges
+        log.error("Validation error: {}", e.getMessage());
+
         Map<String, String> fieldErrors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error ->
                 fieldErrors.put(error.getField(), error.getDefaultMessage())
         );
 
-        // Crear un objecte ErrorResponse personalitzat
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation failed for one or more fields.",
                 System.currentTimeMillis(),
-                fieldErrors // Incloure el mapa d'errors específics
+                fieldErrors
         );
 
-        // Retornar l'error com a ResponseEntity
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
@@ -97,13 +92,12 @@ public class GlobalExceptionHandler {
                 System.currentTimeMillis()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
-    } //aquest crec que no es crida mai
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
         log.error("Constraint violation: {}", e.getMessage());
 
-        // Crear un mapa amb els errors de camps
         Map<String, String> fieldErrors = new HashMap<>();
         e.getConstraintViolations().forEach(violation -> {
             String field = violation.getPropertyPath().toString();
@@ -111,7 +105,6 @@ public class GlobalExceptionHandler {
             fieldErrors.put(field, message);
         });
 
-        // Crear la resposta d'error
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation failed for one or more fields.",
@@ -120,14 +113,12 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    } //aquest mètode funciona correctament
+    }
 
 
-
-    //errors generals
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception e) {
-        log.error("Unexpected error: {}", e.getMessage()); //redundant???
+        log.error("Unexpected error: {}", e.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }

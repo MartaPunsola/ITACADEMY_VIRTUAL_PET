@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public JwtResponse signup(@Valid SignUpRequest request) { //l'anotació valid millor al controller
+    public JwtResponse signup(SignUpRequest request) {
 
         if(userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new NameAlreadyExistsException("This username is not available.");
@@ -34,8 +34,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("This email address is already registered.");
         }
-
-        //si vull que saltin junts, haurien de tenir el mateix tipus d'exception
 
         var user = User.builder().username(request.getUsername())
                 .email(request.getEmail())
@@ -48,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JwtResponse signin(@Valid SignInRequest request) { //l'anotació valid millor al controller
+    public JwtResponse signin(SignInRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = userRepository.findByEmail(request.getEmail())

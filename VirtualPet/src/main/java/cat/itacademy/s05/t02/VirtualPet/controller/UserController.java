@@ -19,8 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-    //fer swagger!!
-
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> allUsers() {
         List<User> users = userService.allUsers();

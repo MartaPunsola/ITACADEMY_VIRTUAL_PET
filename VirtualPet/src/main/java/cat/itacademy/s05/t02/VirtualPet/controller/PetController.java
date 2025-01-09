@@ -18,9 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PetController {
 
-    //fer swagger!!
     private final PetService petService;
-
 
     @PostMapping("/new")
     public ResponseEntity<PetDTO> createPet(@RequestBody @Valid CreatePetRequest request) {
