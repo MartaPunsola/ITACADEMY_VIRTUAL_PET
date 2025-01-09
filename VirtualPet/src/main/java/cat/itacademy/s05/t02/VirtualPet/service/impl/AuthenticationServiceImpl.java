@@ -1,7 +1,6 @@
 package cat.itacademy.s05.t02.VirtualPet.service.impl;
 
 import cat.itacademy.s05.t02.VirtualPet.exception.custom.NameAlreadyExistsException;
-import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import cat.itacademy.s05.t02.VirtualPet.model.User;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.Role;

@@ -5,8 +5,6 @@ import cat.itacademy.s05.t02.VirtualPet.model.enums.PetInteraction;
 import cat.itacademy.s05.t02.VirtualPet.model.enums.PetLocation;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 public class UpdatePetRequest {
 

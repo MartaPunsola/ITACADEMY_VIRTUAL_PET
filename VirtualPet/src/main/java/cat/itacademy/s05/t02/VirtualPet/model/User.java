@@ -1,11 +1,9 @@
 package cat.itacademy.s05.t02.VirtualPet.model;
 
-
 import cat.itacademy.s05.t02.VirtualPet.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +41,6 @@ public class User implements UserDetails {
 
     @NotBlank
     @Size(min = 8, max = 120)
-    //@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$")
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -60,7 +57,6 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        // email in our case
         return email;
     }
 
