@@ -1,0 +1,133 @@
+.pet-page-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 30px auto;
+  max-width: 900px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Column - Pet Image & Stats */
+.pet-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pet-image {
+  width: 420px; 
+  height: auto;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.stats {
+  width: 100%;
+}
+
+.stat {
+  margin: 15px 0;
+
+}
+
+.stat label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 1em;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px; 
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.progress {
+  height: 100%; 
+  background-color: #4caf50; 
+  transition: width 0.5s ease;
+}
+
+/* Right Column - Buttons & Menus */
+.pet-interactions {
+  flex: 0.6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 70px;
+  margin-top: 80px;
+}
+
+.pet-interactions button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 0.9em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.feed-button, .sleep-button, .play-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.feed-button:hover, .sleep-button:hover, .play-button:hover {
+  background-color: #43a047;
+}
+
+.location-selector, .accessory-selector {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.location-label, .accessory-selector label {
+  font-weight: bold;
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+.select-location, .accessory-selector select {
+  padding: 8px 15px;
+  font-size: 0.9em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  width: 100%;
+}
+
+.select-location:hover, .accessory-selector select:hover {
+  background-color: #f1f1f1;
+}
+
+.accessory-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.accessory-buttons button {
+  width: 48%;
+}
+
+.delete-button {
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 0.9em;
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}

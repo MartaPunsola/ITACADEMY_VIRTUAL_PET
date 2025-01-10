@@ -1,0 +1,52 @@
+.all-users-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .all-users-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .user-card {
+    width: 320px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: #fff;
+  }
+  
+  .user-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .user-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .user-card p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .user-role {
+    font-weight: bold;
+    color: #3498db;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  
+  .admin-role {
+    color: #e74c3c;
+  }
+  
+  .user-email {
+    font-style: italic;
+    color: #888;
+  }

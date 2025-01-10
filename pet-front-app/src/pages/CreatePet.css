@@ -1,0 +1,71 @@
+.create-pet-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .create-pet-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .create-pet-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .input-field,
+  .select-field {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .create-btn {
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 18px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .create-btn:hover {
+    background-color: #43a047;
+  }
+  
+  .error-message {
+    color: #d32f2f;
+    font-size: 14px;
+  }
+  
+  .success-message {
+    color: #388e3c;
+    font-size: 16px;
+  }
+  
+  .redirect-link {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .redirect-link a {
+    color: #1976d2;
+    text-decoration: none;
+  }
+  
+  .redirect-link a:hover {
+    text-decoration: underline;
+  }

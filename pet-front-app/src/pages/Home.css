@@ -1,0 +1,47 @@
+.home {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgb(19, 148, 19);
+    background-image: url('/public/images/background2.jpeg');
+    background-size: cover;
+    background-position: center;
+    padding-bottom: 100px; 
+  }
+
+  .home h1 {
+    color: rgb(251, 250, 250);
+    font-size: 4rem;
+    margin-bottom: 20px;
+  }
+
+  .home p {
+    color: rgb(251, 250, 250);
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+
+  .buttons {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  
+  .home-btn {
+    padding: 14px 28px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #ff6347;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .home-btn:hover {
+    background-color: #e5533d;
+  }
